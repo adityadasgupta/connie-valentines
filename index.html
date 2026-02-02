@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>For Connie ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .container {
+      background: white;
+      padding: 42px 32px;
+      border-radius: 22px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+      max-width: 420px;
+      width: 90%;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 28px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      position: relative;
+      height: 60px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+      position: relative;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #yes {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    #yes:hover {
+      transform: scale(1.08);
+    }
+
+    #no {
+      background: #e0e0e0;
+      position: absolute;
+    }
+
+    .message {
+      font-size: 1.4rem;
+      line-height: 1.5;
+    }
+
+    .sub {
+      font-size: 1rem;
+      margin-top: 12px;
+      color: #555;
+    }
+
+    .tiny {
+      font-size: 0.9rem;
+      margin-top: 18px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="card">
+    <h1>My Dear Connie,<br>will you be my Valentine? 💖</h1>
+
+    <div class="buttons">
+      <button id="yes">Yes 💕</button>
+      <button id="no">No</button>
+    </div>
+
+    <div class="tiny">psst… the “No” button is feeling shy</div>
+  </div>
+
+  <script>
+    // 🔔 PUT YOUR URLs HERE
+    const FORMSPREE_URL = "https://formspree.io/f/mjgoebqz";        // Email notification
+    const ZAPIER_WEBHOOK_URL = "https://hooks.zapier.com/hooks/catch/26284222/ulsg12n/"; // Phone push notification
+
+    const noButton = document.getElementById("no");
+    const yesButton = document.getElementById("yes");
+    const card = document.getElementById("card");
+
+    function moveNoButton() {
+      const maxX = 260;
+      const maxY = 130;
+      const x = Math.random() * maxX - maxX / 2;
+      const y = Math.random() * maxY - maxY / 2;
+      noButton.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    // Run away on hover + click + touch
+    noButton.addEventListener("mouseenter", moveNoButton);
+    noButton.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
+    noButton.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNoButton();
+    }, { passive: false });
+
+    function buildPayload() {
+      const now = new Date();
+      return {
+        message: "Connie said YES to being your Valentine 💖",
+        time: now.toLocaleString(),
+        page: window.location.href,
+        user_agent: navigator.userAgent
+      };
+    }
+
+    function postJSON(url, data) {
+      if (!url || url.includes("_HERE")) return;
+      fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      }).catch(() => {});
+    }
+
+    yesButton.addEventListener("click", () => {
+      const payload = buildPayload();
+
+      // Send notifications (non-blocking)
+      postJSON(FORMSPREE_URL, payload);
+      postJSON(ZAPIER_WEBHOOK_URL, payload);
+
+      // Show love message
+      card.innerHTML = `
+        <div class="message">
+          💖 Thank you!! 💖<br><br>
+          Connie, you're so smart. 
+          You're so beautiful.
+          You probably smell amazing right now.
+          You have the most beautiful smile and I love thinking about it everyday :)
+        </div>
+        <div class="sub">
+          Happy Valentine’s Day ❤️
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
