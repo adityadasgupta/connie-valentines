@@ -280,7 +280,7 @@ noButton.addEventListener(
         ← Back
       </button>
     </div>
-      `;});
+      `;
       // Back button logic
     document.getElementById("backBtn").addEventListener("click", () => {
     card.innerHTML = originalCardHTML;
@@ -288,6 +288,31 @@ noButton.addEventListener(
     // Re-bind elements after restoring HTML
     rebindInitialState();
     });
+});
+
+
+function rebindInitialState() {
+  // Re-query elements
+  const newNo = document.getElementById("no");
+  const newYes = document.getElementById("yes");
+
+  // Reset state
+  noClickCount = 0;
+  newNo.textContent = noLabels[0];
+  newNo.style.transform = "none";
+
+  // Reattach handlers
+  newNo.addEventListener("click", handleNoClick);
+  newNo.addEventListener(
+    "touchstart",
+    (e) => handleNoClick(e),
+    { passive: false }
+  );
+
+  newYes.addEventListener("click", () => {
+    yesButton.click();
+  });
+}
 
   </script>
 </body>
