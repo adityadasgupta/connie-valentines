@@ -189,6 +189,7 @@
     const yesButton = document.getElementById("yes");
     const card = document.getElementById("card");
     const pleaseLayer = document.getElementById("pleaseLayer");
+    const originalCardHTML = card.innerHTML;
 
     function moveNoButton() {
       const maxX = 220;
@@ -261,12 +262,33 @@ noButton.addEventListener(
         <div class="tag">she said yes 💘</div>
         <div class="big">${loveNote.replaceAll("\n","<br>")}</div>
         <div class="tinyRow">
-          <span class="pill">happy valentine’s day ❤️</span>
-          <span class="pill">you + me = 🧠💞</span>
-          <span class="pill">ok now come here</span>
+          <span class="pill">Happy valentine’s day baby</span>
+          <span class="pill">I'll always cherish you</span>
+          <span class="pill">Kisses!!</span>
         </div>
-      `;
+
+        <div style="margin-top:22px;">
+      <button id="backBtn"
+        style="
+          background: rgba(0,0,0,0.06);
+          border: 1px solid rgba(0,0,0,0.1);
+          border-radius: 14px;
+          padding: 10px 16px;
+          cursor: pointer;
+          font-size: 0.95rem;
+        ">
+        ← Back
+      </button>
+    </div>
+      `;});
+      // Back button logic
+    document.getElementById("backBtn").addEventListener("click", () => {
+    card.innerHTML = originalCardHTML;
+
+    // Re-bind elements after restoring HTML
+    rebindInitialState();
     });
+
   </script>
 </body>
 </html>
